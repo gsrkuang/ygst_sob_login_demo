@@ -22,21 +22,6 @@ Android端获取请求头参数l_c_i，在Glide加载验证码图片的时候，
 
 那么我们需要做的是给Glide一个新的OKHttp对象，并且OKHttp对象带上拦截器，这样就可以获取到返回的的请求头参数l_c_i 。
 
+![image](https://user-images.githubusercontent.com/13102787/149135879-6d4236e1-6782-4a13-b0d3-d73bedc5ac76.png)
 
-@GlideModule
-public class HttpGlideModule extends AppGlideModule {
-    @Override
-    public void registerComponents(@NonNull Context context, @NonNull Glide glide, @NonNull Registry registry) {
-        super.registerComponents(context, glide, registry);
-        // 请求拦截器
-        RequestInterceptor requestInterceptor = new RequestInterceptor();
-
-        OkHttpClient mClient = new OkHttpClient.Builder()
-                .addInterceptor(requestInterceptor)
-                .build();
-
-        // 注意这里用我们刚才现有的Client实例传入即可
-        registry.replace(GlideUrl.class, InputStream.class, new OkHttpUrlLoader.Factory(mClient));
-    }
-}
 
