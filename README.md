@@ -52,8 +52,8 @@ private void submitLogin(String username ,String password ,String verifyCode){
 
 ![image](https://user-images.githubusercontent.com/13102787/149130646-1c4a6a77-4d54-42d4-8da8-9200f65c6bb9.png)
 
-请求头参数l_c_i
---------------
+获取请求头参数l_c_i
+------------------
 
 这样就能够得到请求头参数l_c_i，非常容易，那么让我们回到Android端，如何来获取请求头参数l_c_i？
 
