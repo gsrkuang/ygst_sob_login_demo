@@ -10,12 +10,33 @@
 首先，让我们先在Postman上面直接请求一下验证码api看看
 
 ![image](https://user-images.githubusercontent.com/13102787/149130555-3e71613f-e0d8-444a-8b09-150aa47dc7b0.png)
-图1
+
+----------------------
+
 ![image](https://user-images.githubusercontent.com/13102787/149130646-1c4a6a77-4d54-42d4-8da8-9200f65c6bb9.png)
-图2
+
 
 这样就能够得到请求头参数l_c_i，非常容易，那么让我们回到Android端，如何来获取请求头参数l_c_i？
 
 Android端获取请求头参数l_c_i，在Glide加载验证码图片的时候，Glide使用了OKHttp来访问验证码api。
+
 那么我们需要做的是给Glide一个新的OKHttp对象，并且OKHttp对象带上拦截器，这样就可以获取到返回的的请求头参数l_c_i 。
+
+
+@GlideModule
+public class HttpGlideModule extends AppGlideModule {
+    @Override
+    public void registerComponents(@NonNull Context context, @NonNull Glide glide, @NonNull Registry registry) {
+        super.registerComponents(context, glide, registry);
+        // 请求拦截器
+        RequestInterceptor requestInterceptor = new RequestInterceptor();
+
+        OkHttpClient mClient = new OkHttpClient.Builder()
+                .addInterceptor(requestInterceptor)
+                .build();
+
+        // 注意这里用我们刚才现有的Client实例传入即可
+        registry.replace(GlideUrl.class, InputStream.class, new OkHttpUrlLoader.Factory(mClient));
+    }
+}
 
