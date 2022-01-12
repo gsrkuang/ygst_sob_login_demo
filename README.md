@@ -4,7 +4,39 @@
 阳光沙滩的登录demo，没有其他的框架，代码是Java用到okHttp发送请求，使用Glide加载验证码的图片。
 
 登陆主要是要在post的时候用到的三个参数，账号、密码、验证码，还有一个就是请求头参数l_c_i
-![image](https://user-images.githubusercontent.com/13102787/149120278-7d2d546a-476f-409f-ae0a-643b25402c74.png)
+```java
+String url = Constants.SUNNY_BEACH_API_BASE_URL+"uc/user/login/";
+
+        OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\r\n    \"phoneNum\": \""+username +"\",\r\n    \"password\": \""+password +"\"\r\n}");
+        Request request = new Request.Builder()
+                //请求地址
+                .url(url+verifyCode)
+                //POST方式
+                .method("POST", body)
+                //增加请求头
+                .addHeader("l_c_i", RequestInterceptor.sobCaptchaKey.toString())
+                .addHeader("Content-Type", "application/json")
+                .build();
+
+        Call call = client.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                Log.d("Login", "onFailure: ");
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+
+                loginResponseText = response.body().string();
+                Log.d("Login", "onResponse: " + loginResponseText);
+                handler.sendEmptyMessage(1);
+            }
+        });
+```
 
 其中要获取账号、密码、验证码这三个参数比较容易，主要的难点还是在于获取请求头参数l_c_i，其实也不难
 首先，让我们先在Postman上面直接请求一下验证码api看看
@@ -22,6 +54,25 @@ Android端获取请求头参数l_c_i，在Glide加载验证码图片的时候，
 
 那么我们需要做的是给Glide一个新的OKHttp对象，并且OKHttp对象带上拦截器，这样就可以获取到返回的的请求头参数l_c_i 。
 
-![image](https://user-images.githubusercontent.com/13102787/149135879-6d4236e1-6782-4a13-b0d3-d73bedc5ac76.png)
 
+```java
+@GlideModule
+public class HttpGlideModule extends AppGlideModule {
 
+    @Override
+    public void registerComponents(@NonNull Context context, @NonNull Glide glide, @NonNull Registry registry) {
+        super.registerComponents(context, glide, registry);
+
+        // 请求拦截器
+        RequestInterceptor requestInterceptor = new RequestInterceptor();
+
+        OkHttpClient mClient = new OkHttpClient.Builder()
+                .addInterceptor(requestInterceptor)
+                .build();
+
+        // 注意这里传入新的mClient实例传入即可
+        registry.replace(GlideUrl.class, InputStream.class, new OkHttpUrlLoader.Factory(mClient));
+
+    }
+}
+```
