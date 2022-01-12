@@ -13,7 +13,6 @@ import okhttp3.Headers;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
-import timber.log.Timber;
 
 /**
  * Date:2022-01-12
