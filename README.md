@@ -112,6 +112,7 @@ public class RequestInterceptor implements Interceptor {
 
 通过上面的拦截器，我们就能得到请求头l_c_i参数值了，到这里登陆用到的所有参数都齐全了。
 接下来使用OKHttp来发送POST登陆请求就好，也就是上面的submitLogin方法，好了登陆就完成了，看下效果吧。
+
 ![image](https://user-images.githubusercontent.com/13102787/149138835-f40aed88-377b-49bd-ba03-c2dd204880bb.png)
 
 
