@@ -1,0 +1,2 @@
+# ygst_sob_login_demo
+阳光沙滩的登录demo，没有任何的框架，代码是java用到okHttp发送请求，使用glide加载验证码的图片。
