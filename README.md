@@ -2,6 +2,12 @@
 -------------------------------
 不知道有没有小伙伴，跟我一样，刚刚接触阳光沙滩就卡在了接入登陆API上的，这个项目主要是一个简单的登录api接入例子，代码比较简单。
 
+使用MVP（java）框架的版本，这里 https://github.com/gsrkuang/ygst_sob_login_demo_mvp
+
+使用MVVM（java）框架的版本，这里 https://github.com/gsrkuang/ygst_sob_login_demo_mvvm
+
+使用MVVM（kotlin）框架的版本，这里 https://github.com/gsrkuang/kotlin_ygst_sob_login_demo_mvvm
+
 阳光沙滩的登录demo，没有其他的框架，代码是Java用到okHttp发送请求，使用Glide加载验证码的图片。
 
 登陆主要是要在post的时候用到的三个参数，账号、密码、验证码，还有一个就是请求头参数l_c_i
